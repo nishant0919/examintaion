@@ -117,14 +117,17 @@ const CategoryPage = ({ params }) => {
             {questionSet.map((question, index) => (
               <div
                 key={question._id}
-                className="bg-gray-800 p-5 rounded-lg shadow-md"
+                className="bg-gray-800 p-5 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ease-in-out"
               >
-                <h3 className="text-xl font-semibold">
+                <h3 className="text-xl font-semibold mb-3">
                   Question {index + 1}: {question.question}
                 </h3>
                 <div className="mt-4 space-y-3">
                   {question.options.map((option, idx) => (
-                    <div key={idx} className="flex items-center">
+                    <div
+                      key={idx}
+                      className="flex items-center group hover:bg-gray-700 p-2 rounded-lg transition-all duration-200"
+                    >
                       <input
                         type="radio"
                         id={`option-${idx}`}
@@ -134,9 +137,14 @@ const CategoryPage = ({ params }) => {
                         onChange={() =>
                           handleAnswerChange(question._id, option)
                         }
-                        className="mr-2"
+                        className="mr-2 h-5 w-5 rounded-full border-gray-300 checked:bg-blue-600"
                       />
-                      <label htmlFor={`option-${idx}`}>{option}</label>
+                      <label
+                        htmlFor={`option-${idx}`}
+                        className="group-hover:text-blue-400 transition-all duration-200"
+                      >
+                        {option}
+                      </label>
                     </div>
                   ))}
                 </div>
@@ -154,11 +162,11 @@ const CategoryPage = ({ params }) => {
         )}
 
         {/* Display View Answer and Next Set buttons */}
-        <div className="mt-8 flex gap-4 justify-center items-center  ">
+        <div className="mt-8 flex gap-4 justify-center items-center">
           {!showAnswers && isAllAnswered && !answerSubmitted && (
             <button
               onClick={checkAnswers}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition-all duration-200 "
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition-all duration-200"
             >
               View Answer
             </button>
@@ -173,7 +181,7 @@ const CategoryPage = ({ params }) => {
 
           <button
             onClick={handleNextSet}
-            className=" px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg text-white transition-all duration-200"
+            className="px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg text-white transition-all duration-200"
           >
             Next Set
           </button>
