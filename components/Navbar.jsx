@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 const menuItems = [
   { name: "Home", href: "/" },
   { name: "Preparation", href: "/category" },
+  { name: "Contact Us", href: "/contact" },
 ];
 
 const Navbar = () => {
