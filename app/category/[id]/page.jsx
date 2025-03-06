@@ -126,7 +126,8 @@ const CategoryPage = ({ params }) => {
                   {question.options.map((option, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center group hover:bg-gray-700 p-2 rounded-lg transition-all duration-200"
+                      className="flex items-center group hover:bg-gray-700 p-2 rounded-lg cursor-pointer transition-all duration-200"
+                      onClick={() => handleAnswerChange(question._id, option)}
                     >
                       <input
                         type="radio"
