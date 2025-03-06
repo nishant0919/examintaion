@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 
 const menuItems = [
   { name: "Home", href: "/" },
-  { name: "Preparation", href: "/preparation" },
+  { name: "Preparation", href: "/category" },
 ];
 
 const Navbar = () => {
@@ -54,14 +54,19 @@ const Navbar = () => {
         onMouseEnter={startGlitch}
         onMouseLeave={stopGlitch}
       >
-        <Link href="/" className="relative z-10">
-          <span className={`relative ${isGlitching ? "glitch" : ""}`}>
+        <Link href="/" className="relative z-10 ">
+          <span
+            className={
+              `relative ${isGlitching ? "glitch" : ""}` +
+              " text-4xl font-bold pl-5"
+            }
+          >
             PrepNep
           </span>
         </Link>
       </motion.div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-6 text-xl">
         {menuItems.map((item, index) => (
           <motion.div
             key={item.name}

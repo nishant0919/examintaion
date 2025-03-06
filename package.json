@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
+    "animate.css": "^4.1.1",
     "framer-motion": "^12.4.10",
     "mongodb": "^6.14.2",
     "mongoose": "^8.12.1",
