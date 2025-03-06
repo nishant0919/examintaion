@@ -58,21 +58,6 @@ function Sidebar() {
             </Link>
           </li>
 
-          {/* Users Menu */}
-          <li
-            className={`${
-              pathname === "/admin/users" ? "bg-gray-800" : ""
-            } hover:bg-gray-800 rounded-lg`}
-          >
-            <Link
-              href="/admin/users"
-              className="flex items-center p-3 space-x-3 text-gray-300 hover:text-white"
-            >
-              <FaUsers className="w-6 h-6" />
-              <span className="text-lg">Users</span>
-            </Link>
-          </li>
-
           {/* Logout Button */}
           <li className="hover:bg-red-700 rounded-lg">
             <button
@@ -103,16 +88,6 @@ function Sidebar() {
           href="/admin/questions"
           className={`${
             pathname === "/admin/questions" ? "text-blue-400" : "text-gray-400"
-          } hover:text-blue-400`}
-        >
-          <FaUsers className="w-6 h-6" />
-        </Link>
-
-        {/* Users Link */}
-        <Link
-          href="/admin/users"
-          className={`${
-            pathname === "/admin/users" ? "text-blue-400" : "text-gray-400"
           } hover:text-blue-400`}
         >
           <FaUsers className="w-6 h-6" />

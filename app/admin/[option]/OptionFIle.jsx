@@ -1,7 +1,7 @@
 "use client";
 import Category from "@/components/Admin/Category";
 import Questions from "@/components/Admin/Questions";
-import React from "react";
+import React, { useEffect } from "react";
 
 function OptionFile({ option }) {
   const [loading, setLoading] = React.useState(true);
@@ -11,10 +11,13 @@ function OptionFile({ option }) {
     try {
       const res = await fetch("/api/user/role");
       const data = await res.json();
+      console.log("Fetched Role:", data);
       if (data.role === "admin") {
         setIsAdmin(true);
+        setLoading(false);
       } else {
         setIsAdmin(false);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching user role:", error);
@@ -23,9 +26,9 @@ function OptionFile({ option }) {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchRole();
-  }, []);
+  }, []); // Will trigger when option changes
 
   if (loading) {
     return <div className="w-full text-center">Loading...</div>;
