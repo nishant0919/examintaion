@@ -15,7 +15,7 @@ export async function POST(request) {
       );
     }
 
-    const { name, image } = await request.json(); // FIX: Extract JSON data properly
+    const { name, image } = await request.json();
 
     const existingCategory = await Category.findOne({ name });
     if (existingCategory) {

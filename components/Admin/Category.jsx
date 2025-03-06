@@ -57,7 +57,7 @@ function Category() {
     if (data.success) {
       alert("Category added successfully!");
       fetchCategories();
-      setIsOpen(false);
+      setIsOpen(false); // Close modal after submitting
       setName("");
       setImage(null);
       setImageUrl("");
@@ -78,12 +78,6 @@ function Category() {
       {categories.length === 0 ? (
         <div className="mt-6 text-center text-gray-600">
           <p className="text-lg">Category is empty</p>
-          <button
-            className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-            onClick={() => setIsOpen(true)}
-          >
-            Add Category
-          </button>
         </div>
       ) : (
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl">
@@ -134,6 +128,74 @@ function Category() {
           ))}
         </div>
       )}
+
+      {/* Modal for Adding Category */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+          >
+            <motion.div
+              className="bg-gray-900  p-6 rounded-lg shadow-xl w-96"
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicked inside
+            >
+              <h2 className="text-lg font-semibold mb-4">Add New Category</h2>
+              <input
+                type="text"
+                placeholder="Category Name"
+                className="border rounded-md w-full text-white bg-gray-900 p-2 mb-4"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              {image && (
+                <div className="mt-4">
+                  <img
+                    src={image}
+                    alt="Preview"
+                    className="w-full h-32 object-cover rounded-md"
+                  />
+                  <button
+                    className="mt-2 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600"
+                    onClick={() => {
+                      setImage(null);
+                      setImageUrl("");
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
+
+              <div className="mt-4 flex justify-end space-x-2">
+                <button
+                  className="bg-gray-400 text-white px-4 py-2 rounded-md"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
