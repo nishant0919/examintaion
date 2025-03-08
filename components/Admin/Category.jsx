@@ -67,7 +67,7 @@ function Category() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 mb-10">
       <button
         className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg hover:bg-blue-700 transition-all"
         onClick={() => setIsOpen(true)}
@@ -76,7 +76,7 @@ function Category() {
       </button>
 
       {categories.length === 0 ? (
-        <div className="mt-6 text-center text-gray-600">
+        <div className="mt-6 text-center text-gray-600 dark:text-gray-300">
           <p className="text-lg">Category is empty</p>
         </div>
       ) : (
@@ -90,7 +90,7 @@ function Category() {
               transition={{ duration: 0.2, delay: index * 0.2 }}
               whileHover={{
                 scale: 1.05,
-                borderColor: "#00d4ff",
+                borderColor: "blue", // Set the border color to white on hover
                 transition: { duration: 0.2 },
               }}
               whileTap={{
@@ -108,7 +108,7 @@ function Category() {
 
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 group-hover:bg-opacity-75">
                 <motion.h2
-                  className="text-2xl font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110"
+                  className="text-2xl font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110 text-white" // Ensure text is visible in light mode
                   whileHover={{ y: -5 }}
                 >
                   {category.name}
@@ -116,12 +116,12 @@ function Category() {
               </div>
 
               <motion.div
-                className="absolute inset-0 border-4 border-transparent group-hover:border-blue-500 transition-all duration-200 ease-out"
+                className="absolute inset-0 border-4 border-transparent group-hover:border-white transition-all duration-200 ease-out" // Border color will be white on hover
                 style={{
-                  borderTop: "2px solid #00d4ff",
-                  borderBottom: "2px solid #00d4ff",
-                  borderLeft: "2px solid #00d4ff",
-                  borderRight: "2px solid #00d4ff",
+                  borderTop: "2px solid #ffffff", // Ensure border is white
+                  borderBottom: "2px solid #ffffff", // Ensure border is white
+                  borderLeft: "2px solid #ffffff", // Ensure border is white
+                  borderRight: "2px solid #ffffff", // Ensure border is white
                 }}
               ></motion.div>
             </motion.div>
@@ -140,7 +140,7 @@ function Category() {
             onClick={() => setIsOpen(false)}
           >
             <motion.div
-              className="bg-gray-900  p-6 rounded-lg shadow-xl w-96"
+              className="bg-gray-900 text-white p-6 rounded-lg shadow-xl w-96"
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
@@ -150,7 +150,7 @@ function Category() {
               <input
                 type="text"
                 placeholder="Category Name"
-                className="border rounded-md w-full text-white bg-gray-900 p-2 mb-4"
+                className="border rounded-md w-full p-2 mb-4 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -158,6 +158,7 @@ function Category() {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
+                className="file:border file:border-blue-500 file:bg-blue-500 file:text-white file:px-4 file:py-2 rounded-md mb-4"
               />
               {image && (
                 <div className="mt-4">

@@ -25,6 +25,31 @@ function Questions() {
     fetchCategories();
   }, []);
 
+  // Dynamically set the theme based on the user's preference
+  useEffect(() => {
+    const handleThemeChange = (e) => {
+      if (e.matches) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    };
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", handleThemeChange);
+
+    // Initial theme set
+    if (mediaQuery.matches) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleThemeChange);
+    };
+  }, []);
+
   // Handle input for each option dynamically
   const handleOptionChange = (index, value) => {
     const updatedOptions = [...options];
@@ -83,20 +108,20 @@ function Questions() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-gray-900 rounded-xl shadow-xl space-y-8 animate__animated animate__fadeIn">
-      <h2 className="text-3xl font-bold text-white text-center">
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-xl space-y-8 animate__animated animate__fadeIn dark:bg-gray-800 dark:text-white">
+      <h2 className="text-3xl font-bold text-gray-800 text-center dark:text-gray-100">
         Add a New Question
       </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 bg-gray-800 p-6 rounded-lg shadow-md"
+        className="space-y-6 p-6 rounded-lg shadow-md bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-100"
       >
         {/* Question Field */}
         <div className="space-y-2">
           <label
             htmlFor="question"
-            className="text-lg font-semibold text-gray-300"
+            className="text-lg font-semibold text-gray-800 dark:text-gray-200"
           >
             Question:
           </label>
@@ -106,7 +131,7 @@ function Questions() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             required
-            className="w-full p-4 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 bg-gray-700 text-white"
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-100"
             placeholder="Enter the question"
           />
         </div>
@@ -115,7 +140,7 @@ function Questions() {
         <div className="space-y-2">
           <label
             htmlFor="answer"
-            className="text-lg font-semibold text-gray-300"
+            className="text-lg font-semibold text-gray-800 dark:text-gray-200"
           >
             Correct Answer:
           </label>
@@ -125,14 +150,14 @@ function Questions() {
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             required
-            className="w-full p-4 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 bg-gray-700 text-white"
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-100"
             placeholder="Enter the correct answer"
           />
         </div>
 
         {/* Options */}
         <div className="space-y-2">
-          <label className="text-lg font-semibold text-gray-300">
+          <label className="text-lg font-semibold text-gray-800 dark:text-gray-200">
             Options:
           </label>
           {options.map((option, index) => (
@@ -142,7 +167,7 @@ function Questions() {
               value={option}
               onChange={(e) => handleOptionChange(index, e.target.value)}
               required
-              className="w-full p-4 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 bg-gray-700 text-white"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-100"
               placeholder={`Option ${index + 1}`}
             />
           ))}
@@ -152,7 +177,7 @@ function Questions() {
         <div className="space-y-2">
           <label
             htmlFor="category"
-            className="text-lg font-semibold text-gray-300"
+            className="text-lg font-semibold text-gray-800 dark:text-gray-200"
           >
             Select Category:
           </label>
@@ -161,7 +186,7 @@ function Questions() {
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             required
-            className="w-full p-4 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 bg-gray-700 text-white"
+            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-100"
           >
             <option value="">Select Category</option>
             {categories.map((category) => (
@@ -178,7 +203,7 @@ function Questions() {
             type="submit"
             disabled={loading}
             className={`w-full py-3 px-4 text-white font-semibold rounded-lg transition duration-300 ${
-              loading ? "bg-gray-600" : "bg-indigo-600 hover:bg-indigo-700"
+              loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
             }`}
           >
             {loading ? "Submitting..." : "Add Question"}

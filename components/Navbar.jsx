@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -16,8 +15,12 @@ const Navbar = () => {
   const [isGlitching, setIsGlitching] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { data: session } = useSession();
+  const [hideNavbar, setHideNavbar] = useState(false);
+  const path = usePathname();
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   let timeoutId;
+
   const startGlitch = () => {
     setIsGlitching(true);
     timeoutId = setTimeout(() => setIsGlitching(false), 1000);
@@ -28,9 +31,6 @@ const Navbar = () => {
     setIsGlitching(false);
   };
 
-  const [hideNavbar, setHideNavbar] = useState(false);
-  const path = usePathname();
-
   useEffect(() => {
     if (path.includes("/admin")) {
       setHideNavbar(true);
@@ -39,34 +39,50 @@ const Navbar = () => {
     }
   }, [path]);
 
+  // Check if the dark mode preference is stored in localStorage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setIsDarkMode(true);
+      document.documentElement.classList.add("dark");
+    } else {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = isDarkMode ? "light" : "dark";
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem("theme", newTheme); // Save the theme preference
+
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
   if (hideNavbar) {
     return null;
   }
 
   return (
     <motion.nav
-      className="relative flex items-center justify-between px-6 py-4 bg-gray-900 shadow-lg"
+      className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 shadow-lg transition-all duration-300 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <motion.div
-        className="text-3xl font-bold text-white cursor-pointer relative"
+        className="text-3xl font-bold cursor-pointer relative"
         onMouseEnter={startGlitch}
         onMouseLeave={stopGlitch}
       >
-        <Link href="/" className="relative z-10 ">
-          <span
-            className={
-              `relative ${isGlitching ? "glitch" : ""}` +
-              " text-4xl font-bold pl-5"
-            }
-          >
-            PrepNep
-          </span>
+        <Link href="/" className="relative z-10">
+          <span className="relative text-4xl font-bold pl-5">PrepNep</span>
         </Link>
       </motion.div>
-
       <div className="flex items-center gap-6 text-xl">
         {menuItems.map((item, index) => (
           <motion.div
@@ -80,7 +96,6 @@ const Navbar = () => {
             </Link>
           </motion.div>
         ))}
-
         {session?.user ? (
           <div className="relative">
             <img
@@ -89,9 +104,8 @@ const Navbar = () => {
               className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-500"
               onClick={() => setIsPopupOpen(!isPopupOpen)}
             />
-
             {isPopupOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-gray-800 shadow-lg rounded-md text-white z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-gray-800 dark:bg-gray-700 shadow-lg rounded-md text-white z-50">
                 <div className="p-4 text-center border-b border-gray-700">
                   <p className="font-semibold">{session.user.name}</p>
                   <p className="text-sm text-gray-400">{session.user.email}</p>
@@ -115,62 +129,39 @@ const Navbar = () => {
             </Link>
           </motion.div>
         )}
+        {/* Dark Mode Toggle Button */}
+        <button
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600"
+          onClick={toggleTheme}
+        >
+          {isDarkMode ? (
+            <img
+              src="https://clipartcraft.com/images/moon-clipart-black-5.png"
+              alt="Dark Mode"
+              className="w-6 h-6"
+            />
+          ) : (
+            <img
+              src="https://static.vecteezy.com/system/resources/previews/018/887/522/original/yellow-sun-icon-png.png"
+              alt="Light Mode"
+              className="w-6 h-6"
+            />
+          )}
+        </button>
       </div>
-
       <style jsx>{`
         .nav-item {
           font-size: 1.1rem;
-          color: white;
           font-weight: 600;
           transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
           padding: 8px 14px;
         }
-
         .nav-item:hover {
           color: #00d4ff;
           transform: translateY(-3px);
         }
 
-        @keyframes glitch {
-          0% {
-            text-shadow: -3px -3px 0 #ff0000, 3px 3px 0 #00ff00;
-          }
-          20% {
-            text-shadow: 3px -3px 0 #ff0000, -3px 3px 0 #00ff00;
-          }
-          40% {
-            text-shadow: -3px 3px 0 #ff0000, 3px -3px 0 #00ff00;
-          }
-          60% {
-            text-shadow: 3px 3px 0 #ff0000, -3px -3px 0 #00ff00;
-          }
-          80% {
-            text-shadow: -3px -3px 0 #ff0000, 3px 3px 0 #00ff00;
-          }
-          100% {
-            text-shadow: 3px -3px 0 #ff0000, -3px 3px 0 #00ff00;
-          }
-        }
-
-        .glitch {
-          animation: glitch 0.3s infinite;
-          position: relative;
-        }
-
-        .glitch:after {
-          content: attr(data-text);
-          position: absolute;
-          top: 0;
-          left: 0;
-          color: #ff0000;
-          z-index: -1;
-          animation: glitch 0.3s infinite;
-          visibility: hidden;
-        }
-
-        .glitch:hover:after {
-          visibility: visible;
-        }
+        /* Remove glitch effect styles */
       `}</style>
     </motion.nav>
   );

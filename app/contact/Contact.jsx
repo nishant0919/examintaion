@@ -70,11 +70,11 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex justify-center items-center py-12">
-      <div className="flex w-full max-w-5xl bg-gray-800 p-8 rounded-lg shadow-lg space-x-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex justify-center items-center py-12">
+      <div className="flex w-full max-w-4xl bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg space-x-8">
         {/* Left Side Form */}
         <div className="w-full max-w-md space-y-6">
-          <h1 className="text-3xl font-semibold text-center mb-6">
+          <h1 className="text-3xl font-semibold text-center mb-6 text-gray-900 dark:text-white">
             Contact Us
           </h1>
 
@@ -91,7 +91,7 @@ const ContactUs = () => {
                 value={formData.username}
                 onChange={handleChange}
                 required
-                className="mt-2 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your name"
               />
             </div>
@@ -108,7 +108,7 @@ const ContactUs = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="mt-2 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your email"
               />
             </div>
@@ -125,7 +125,7 @@ const ContactUs = () => {
                 onChange={handleChange}
                 required
                 rows="5"
-                className="mt-2 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Write your message here"
               ></textarea>
             </div>
@@ -168,7 +168,7 @@ const ContactUs = () => {
             alt="Contact Us"
             className="w-full h-auto rounded-lg shadow-lg"
           />
-          <p className="text-xl font-semibold text-white mt-4">
+          <p className="text-xl font-semibold text-gray-900 dark:text-white mt-4">
             Contact us anytime if you have any issues or problems filling up the
             form.
           </p>

@@ -24,7 +24,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-start px-6 py-12">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col items-center justify-start px-6 py-12">
       <motion.h1
         className="text-4xl font-bold mb-10 text-center"
         initial={{ opacity: 0, y: -20 }}
@@ -34,18 +34,18 @@ const LandingPage = () => {
         Welcome to Exam Preparation Portal
       </motion.h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl">
         {categories.map((category, index) => (
           <motion.div
             key={category._id}
-            className="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group border-4 border-transparent transition-all duration-100"
+            className="relative overflow-hidden rounded-lg shadow-lg cursor-pointer group border-4 border-transparent transition-all duration-200"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, delay: index * 0.2 }}
+            transition={{ duration: 0.3, delay: index * 0.2 }}
             whileHover={{
               scale: 1.05,
               borderColor: "#00d4ff",
-              transition: { duration: 0.2 },
+              transition: { duration: 0.3 },
             }}
             whileTap={{
               scale: 1,
@@ -61,9 +61,9 @@ const LandingPage = () => {
               />
             </div>
 
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 group-hover:bg-opacity-75">
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 dark:bg-opacity-50 transition-all duration-300 group-hover:bg-opacity-75">
               <motion.h2
-                className="text-2xl font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110"
+                className="text-2xl font-semibold text-transparent group-hover:text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110"
                 whileHover={{ y: -5 }}
               >
                 {category.name}

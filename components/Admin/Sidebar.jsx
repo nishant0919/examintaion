@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { FaThLarge, FaUsers } from "react-icons/fa"; // Category icon and Users icon
 import { CgLogOut } from "react-icons/cg";
 import { usePathname } from "next/navigation";
@@ -72,7 +72,7 @@ function Sidebar() {
       </div>
 
       {/* Mobile Bottom Navbar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-3 flex justify-around text-white">
+      <div className="md:hidden z-10 fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-3 flex justify-around text-white">
         {/* Category Link */}
         <Link
           href="/admin/category"

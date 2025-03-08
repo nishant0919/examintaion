@@ -3,19 +3,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const CategoryPage = ({ params }) => {
-  const { id } = params; // Get category ID from the URL
+  const { id } = params;
   const [category, setCategory] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [answers, setAnswers] = useState({}); // Store selected answers
-  const [showAnswers, setShowAnswers] = useState(false); // To toggle showing answers
-  const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Count correct answers
-  const [questionSet, setQuestionSet] = useState([]); // Store the current set of questions
-  const [answerSubmitted, setAnswerSubmitted] = useState(false); // To track if the answer was submitted
+  const [answers, setAnswers] = useState({});
+  const [showAnswers, setShowAnswers] = useState(false);
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [questionSet, setQuestionSet] = useState([]);
+  const [answerSubmitted, setAnswerSubmitted] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
-    // Fetch category details and questions related to the category
     const fetchCategoryAndQuestions = async () => {
       try {
         const resCategory = await fetch(`/api/category/get?id=${id}`);
@@ -24,11 +24,10 @@ const CategoryPage = ({ params }) => {
         if (dataCategory.success) {
           setCategory(dataCategory.category);
         } else {
-          router.push("/404"); // Redirect to 404 if category not found
+          router.push("/404");
           return;
         }
 
-        // Fetch questions for this category
         const resQuestions = await fetch(`/api/question/get?categoryId=${id}`);
         const dataQuestions = await resQuestions.json();
 
@@ -46,12 +45,9 @@ const CategoryPage = ({ params }) => {
     fetchCategoryAndQuestions();
   }, [id, router]);
 
-  // Function to get random questions from the question bank
   const getRandomQuestions = (allQuestions) => {
-    const shuffledQuestions = [...allQuestions].sort(() => 0.5 - Math.random()); // Shuffle questions
-    const selectedQuestions = shuffledQuestions.slice(0, 5); // Take the first 5 questions
-
-    // Randomize options for each question
+    const shuffledQuestions = [...allQuestions].sort(() => 0.5 - Math.random());
+    const selectedQuestions = shuffledQuestions.slice(0, 5);
     const randomizedQuestions = selectedQuestions.map((question) => {
       const shuffledOptions = [...question.options].sort(
         () => 0.5 - Math.random()
@@ -60,14 +56,18 @@ const CategoryPage = ({ params }) => {
     });
 
     setQuestionSet(randomizedQuestions);
-    setAnswerSubmitted(false); // Reset answer submitted state for the new set
+    setAnswerSubmitted(false);
   };
 
   const handleAnswerChange = (questionId, option) => {
     setAnswers((prevAnswers) => {
-      const newAnswers = { ...prevAnswers, [questionId]: option };
-      return newAnswers;
+      if (prevAnswers[questionId] === option) return prevAnswers;
+      return { ...prevAnswers, [questionId]: option };
     });
+  };
+
+  const handleOptionClick = (questionId, option) => {
+    handleAnswerChange(questionId, option);
   };
 
   const checkAnswers = () => {
@@ -78,23 +78,23 @@ const CategoryPage = ({ params }) => {
       }
     });
     setCorrectAnswersCount(correctCount);
-    setShowAnswers(true); // Show answers after all questions answered
-    setAnswerSubmitted(true); // Track that the answer was submitted
+    setShowAnswers(true);
+    setAnswerSubmitted(true);
   };
 
   const handleNextSet = () => {
-    setAnswers({}); // Reset answers for the next set
-    setShowAnswers(false); // Hide answers for the next set
-    getRandomQuestions(questions); // Get a new random set of questions
+    setAnswers({});
+    setShowAnswers(false);
+    setCurrentQuestionIndex(0);
+    getRandomQuestions(questions);
   };
 
-  // Check if all questions are answered in the current set
   const isAllAnswered = questionSet.every((question) => answers[question._id]);
 
   if (loading) return <p className="text-center text-white">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen dark:bg-gray-900 bg-gray-100 dark:text-white text-gray-900 flex flex-col items-center justify-center px-6 py-12 transition-all duration-300 ease-in-out">
       <h1 className="text-4xl font-bold mb-6">
         {category
           ? `Welcome to ${category.name} Exam Preparation`
@@ -117,7 +117,7 @@ const CategoryPage = ({ params }) => {
             {questionSet.map((question, index) => (
               <div
                 key={question._id}
-                className="bg-gray-800 p-5 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ease-in-out"
+                className="bg-gray-200 dark:bg-gray-700 p-5 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ease-in-out"
               >
                 <h3 className="text-xl font-semibold mb-3">
                   Question {index + 1}: {question.question}
@@ -126,8 +126,8 @@ const CategoryPage = ({ params }) => {
                   {question.options.map((option, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center group hover:bg-gray-700 p-2 rounded-lg cursor-pointer transition-all duration-200"
-                      onClick={() => handleAnswerChange(question._id, option)}
+                      className="flex items-center group hover:bg-blue-500 p-2 rounded-lg cursor-pointer transition-all duration-200"
+                      onClick={() => handleOptionClick(question._id, option)}
                     >
                       <input
                         type="radio"
@@ -142,7 +142,7 @@ const CategoryPage = ({ params }) => {
                       />
                       <label
                         htmlFor={`option-${idx}`}
-                        className="group-hover:text-blue-400 transition-all duration-200"
+                        className="group-hover:text-white transition-all duration-200"
                       >
                         {option}
                       </label>
@@ -162,7 +162,6 @@ const CategoryPage = ({ params }) => {
           </div>
         )}
 
-        {/* Display View Answer and Next Set buttons */}
         <div className="mt-8 flex gap-4 justify-center items-center">
           {!showAnswers && isAllAnswered && !answerSubmitted && (
             <button
